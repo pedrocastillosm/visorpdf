@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visor PDF</title>
+  <script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+    #adobe-dc-view {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="adobe-dc-view"></div>
+
+  <script>
+    function getParameterByName(name) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var url = window.location.href;
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    document.addEventListener("adobe_dc_view_sdk.ready", function() {
+      var pdfUrl = getParameterByName('file');
+      var fileName = pdfUrl.split('/').pop() || 'documento.pdf';
+
+      var adobeDCView = new AdobeDC.View({
+        clientId: "5032d3ed423a4c01b6efc2e76637fcef",
+        divId: "adobe-dc-view"
+      });
+      adobeDCView.previewFile({
+        content: { location: { url: pdfUrl } },
+        metaData: { fileName: fileName }
+      });
+    });
+  </script>
+</body>
+</html>
