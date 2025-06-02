@@ -29,9 +29,14 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
-    document.addEventListener("adobe_dc_view_sdk.ready", function() {
-      var pdfUrl = getParameterByName('file');
-      var fileName = pdfUrl.split('/').pop() || 'documento.pdf';
+
+ // Armar nombre de la pestaña:
+  const nombreArchivo = codigo.split('/').pop().replace('.pdf', '');
+  document.title = `Blob | ${nombreArchivo}`;
+
+  // Armar URL al Blob:
+  const pdfUrl = `https://accesoexterno.blob.core.windows.net/verificardocumentos/${encodeURIComponent(codigo)}.pdf`;
+
 
       var adobeDCView = new AdobeDC.View({
         clientId: "9f988fee7e924fcba73ff232731fc3f5",
@@ -39,7 +44,7 @@
       });
       adobeDCView.previewFile({
         content: { location: { url: pdfUrl } },
-        metaData: { fileName: fileName }
+        metaData: { fileName: `${nombreArchivo}.pdf` }
       });
     });
   </script>
