@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Visor PDF</title>
   <script src="https://documentcloud.adobe.com/view-sdk/viewer.js"></script>
   <style>
     html, body {
@@ -29,9 +28,17 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+
+
     document.addEventListener("adobe_dc_view_sdk.ready", function() {
       var pdfUrl = getParameterByName('file');
-      var fileName = pdfUrl.split('/').pop() || 'documento.pdf';
+      
+      // Decodificar el nombre del archivo limpio:
+      var fileNameEncoded = pdfUrl.split('/').pop() || 'documento.pdf';
+      var fileName = decodeURIComponent(fileNameEncoded);
+
+      // Cambiar el título de la pestaña:
+      document.title = `Blob | ${fileName}`;
 
       var adobeDCView = new AdobeDC.View({
         clientId: "9f988fee7e924fcba73ff232731fc3f5",
