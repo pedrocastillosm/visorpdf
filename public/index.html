@@ -29,15 +29,30 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+      const codigoBase64 = getParameterByName('codigo');
 
- // Armar nombre de la pestaña:
-  const nombreArchivo = codigo.split('/').pop().replace('.pdf', '');
-  document.title = `Blob | ${nombreArchivo}`;
+      if (!codigoBase64) {
+        document.body.innerHTML = "<h2>Falta parámetro 'codigo'</h2>";
+        return;
+      }
 
-  // Armar URL al Blob:
-  const pdfUrl = `https://accesoexterno.blob.core.windows.net/verificardocumentos/${encodeURIComponent(codigo)}.pdf`;
+      let codigo = '';
+      try {
+        codigo = atob(codigoBase64);
+      } catch (e) {
+        document.body.innerHTML = "<h2>El parámetro 'codigo' no es válido (Base64 incorrecto)</h2>";
+        return;
+      }
 
+      // Armar nombre de la pestaña:
+      const nombreArchivo = codigo.split('/').pop().replace('.pdf', '');
+      document.title = `Blob | ${nombreArchivo}`;
 
+      // Armar URL al Blob:
+      const pdfUrl = `https://accesoexterno.blob.core.windows.net/verificardocumentos/${encodeURIComponent(codigo)}.pdf`;
+
+      // Inicializar Adobe Embed:
       var adobeDCView = new AdobeDC.View({
         clientId: "9f988fee7e924fcba73ff232731fc3f5",
         divId: "adobe-dc-view"
