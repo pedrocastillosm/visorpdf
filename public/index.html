@@ -50,7 +50,7 @@
       document.title = `Blob | ${nombreArchivo}`;
 
       // Armar URL al Blob:
-      const pdfUrl = `https://accesoexterno.blob.core.windows.net/verificardocumentos/${encodeURIComponent(codigo)}.pdf`;
+      const pdfUrl = `https://accesoexterno.blob.core.windows.net/verificardocumentos/${nombreArchivo}.pdf`;
 
       // Inicializar Adobe Embed:
       var adobeDCView = new AdobeDC.View({
